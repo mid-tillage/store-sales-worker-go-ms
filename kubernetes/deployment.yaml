@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: store-sales-worker-go-ms-deployment
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: store-sales-worker-go-ms
+  template:
+    metadata:
+      labels:
+        app: store-sales-worker-go-ms
+    spec:
+      containers:
+        - name: store-sales-worker-go-ms-container
+          image: store-sales-worker-go-ms:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3040
+          env:
+            - name: NODE_ENV
+              value: "production"
+            - name: DB_HOST
+              value: "host.docker.internal"
+            - name: DB_PORT
+              value: "5432"
+            - name: DB_USERNAME
+              value: "postgres"
+            - name: DB_PASSWORD
+              value: "1234"
+            - name: DB_NAME
+              value: "sale-management-system"
+            - name: DB_LOGGING
+              value: "true"

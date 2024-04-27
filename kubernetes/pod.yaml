@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: store-sales-worker-go-ms-pod
+  labels:
+    app: store-sales-worker-go-ms
+spec:
+  containers:
+  - name: store-sales-worker-go-ms-container
+    image: store-sales-worker-go-ms:latest
+    imagePullPolicy: IfNotPresent
+    ports:
+    - containerPort: 3040
+    env:
+    - name: NODE_ENV
+      value: "production"
+    - name: DB_HOST
+      value: "host.docker.internal"
+    - name: DB_PORT
+      value: "5432"
+    - name: DB_USERNAME
+      value: "postgres"
+    - name: DB_PASSWORD
+      value: "1234"
+    - name: DB_NAME
+      value: "sale-management-system"
+    - name: DB_LOGGING
+      value: "true"
+    - name: STORE_ENGINE_ORCHESTRATOR_IP
+      valueFrom:
+        configMapKeyRef:
+          name: store-engine-configmap
+          key: STORE_ENGINE_ORCHESTRATOR_IP
+    - name: STORE_ENGINE_ORCHESTRATOR_PORT
+      value: "2500"
